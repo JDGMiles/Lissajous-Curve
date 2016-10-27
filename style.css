@@ -1,6 +1,6 @@
 @font-face {font-family: Liberation Serif; src: url(http://jdgmiles.github.io/LiberationSerif.woff);}
 
-body {color: white; background-color:#444444;}
+body {color: white; background-color:#000000;}
 
 a:link {color: red; text-decoration: none;}
 a:link:hover {text-decoration:underline}

@@ -20,8 +20,8 @@
 		<div id="popup1" class="overlay">
 			<div class="popup">
 				<a class="close" style="right: 30px;" href="#">&times;</a>
-				<div style="font-family:Georgia; color:white; text-align:center; text-decoration:underline; font-size:38px">The Lissajous Curve</div>
-				<span style="font-family:Georgia; font-size:30px; color:white; text-align:justify;"><br>The Lissajous Curve<br></span><br>
+				<div style="font-family:Georgia; color:white; text-align:center; text-decoration:underline; font-size:38px">Lissajous Curve</div>
+				<span style="font-family:Georgia; font-size:30px; color:white; text-align:justify;"><br>A <a href="https://en.wikipedia.org/wiki/Lissajous_curve" target="_blank">Lissajous Curve</a> with the following equations:<br><br>x = 800 sin(28t)<br>y = 500 cos(23)<br></span><br>
 			</div>
 		</div>
 
@@ -31,16 +31,18 @@
 </html>
 
 <script type="text/javascript">
-var field={width:800, height:600};
+var field={width:800, height:500};
 var fieldcolor="black";
-var fps=60;
-var shuffleno=1;
-var time=0;
-var A=800;
-var B=600;
-var a=1;
-var b=1;
+var fps=120;
+var time=0.071;
+var A=field.width/2-3;
+var B=field.height/2-3;
+var a=28;
+var b=23;
 var delta=0;
+var xpos=A*Math.sin(a*time+delta)+field.width/2;
+var ypos=B*Math.sin(b*time)+field.height/2;
+var increment=0.001;
 
 
 var canvas = document.getElementById("canvas"),
@@ -49,23 +51,45 @@ var canvas = document.getElementById("canvas"),
 canvas.width = field.width;
 canvas.height = field.height;
 
-ctx.fillStyle=fieldcolor;
-ctx.fillRect(0, 0, field.width, field.height);
-ctx.moveTo(field.width/2, field.height/2);
-
 function draw(){
 
-	ctx.beginPath();
-	ctx.lineTo(30, 30);
-	ctx.strokeStyle="white";
-	ctx.stroke();
+	if(time<6.5){
+		ctx.beginPath();
+		ctx.moveTo(xpos, ypos);
+		ctx.lineTo(A*Math.sin(a*time+delta)+field.width/2, B*Math.sin(b*time)+field.height/2);
+		xpos=A*Math.sin(a*time+delta)+field.width/2;
+		ypos=B*Math.sin(b*time)+field.height/2;
+		ctx.strokeStyle="white";
+		ctx.lineWidth=2;
+		ctx.stroke();
+	}
+	else{
+		ctx.fillStyle = "rgba(0, 0, 0, "+0.4*(time-6.5)+")";
+		ctx.fillRect(0, 0, field.width, field.height);
+	}
 
-	time++;
+	time=time+increment;
+
+	if(time>6.8){
+		ctx.fillStyle=fieldcolor;
+		ctx.fillRect(0, 0, field.width, field.height);
+		time=0.071;
+		xpos=A*Math.sin(a*time+delta)+field.width/2;
+		ypos=B*Math.sin(b*time)+field.height/2;
+	}
+
 	setTimeout(draw, 1000/fps);
 
 
 }
 
-draw();
+function begin(){
+	ctx.fillStyle=fieldcolor;
+	ctx.fillRect(0, 0, field.width, field.height);
+	ctx.moveTo(field.width/2, field.height/2);
+	draw();
+}
+
+begin();
 
 </script>
